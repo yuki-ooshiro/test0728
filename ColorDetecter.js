@@ -87,7 +87,7 @@ function processVideo() {
         dst = new cv.Mat();
         cap.read(src);
         cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-        cv.imshow('canvasOutput', dst);
+        cv.imshow('canvas', dst);
         src.delete();
         dst.delete();
 
