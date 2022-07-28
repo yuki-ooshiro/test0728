@@ -78,3 +78,8 @@ function processVideo() {
     }
     return;
 };
+
+
+window.addEventListener('load', function() {
+    onOpenCvReady();
+});
