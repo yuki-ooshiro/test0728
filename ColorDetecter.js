@@ -59,26 +59,39 @@ function processVideo() {
         }
         let begin = Date.now();
 
+        // src = new cv.Mat(player.height, player.width, cv.CV_8UC4);
+        // dst = new cv.Mat();
+        // hsv = new cv.Mat();
+
+        // cap.read(src);
+        // cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+
+        // let lower = new cv.Mat(src.rows, src.cols, src.type(), [0, 0, 0, 0]);
+        // let upper = new cv.Mat(src.rows, src.cols, src.type(), [150, 150, 150, 255]);
+
+        // img = new cv.Mat(player.height, player.width, cv.CV_8UC4);
+        // cv.cvtColor(img, hsv, cv.COLOR_BGR2HSV);
+        // let frame_mask = new cv.Mat();
+        // cv.inRange(hsv, lower, upper, frame_mask);
+        // cv.bitwise_and(img, img, dst);
+
+        // cv.imshow('canvas', dst);
+
+        // src.delete();
+        // dst.delete();
+
+        // let delay = 1000 / FPS - (Date.now() - begin);
+        // setTimeout(processVideo, delay);
+        // start processing.
         src = new cv.Mat(player.height, player.width, cv.CV_8UC4);
         dst = new cv.Mat();
-
         cap.read(src);
         cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-
-        let lower = new cv.Mat(src.rows, src.cols, src.type(), [0, 0, 0, 0]);
-        let upper = new cv.Mat(src.rows, src.cols, src.type(), [150, 150, 150, 255]);
-
-        img = new cv.Mat(player.height, player.width, cv.CV_8UC4);
-        hsv = cv.cvtColor(img, dst, cv.COLOR_BGR2HSV);
-        let frame_mask = new cv.Mat();
-        cv.inRange(hsv, lower, upper, frame_mask);
-        cv.bitwise_and(img, img, dst);
-
-        cv.imshow('canvas', dst);
-
+        cv.imshow('canvasOutput', dst);
         src.delete();
         dst.delete();
 
+        // schedule the next one.
         let delay = 1000 / FPS - (Date.now() - begin);
         setTimeout(processVideo, delay);
     } catch (err) {
