@@ -6,11 +6,11 @@ let isCvLoaded = false
 
 let hsv = null;
 let img = null;
-let lower = [90,64,0];
-let upper = [150,255,255];
+let lower = [90, 64, 0];
+let upper = [150, 255, 255];
 let frame_mask = null;
 
-export function ColorDetect(){
+export function ColorDetect() {
     return null;
 }
 
@@ -18,8 +18,7 @@ function onOpenCvReady() {
     if (cv.getBuildInformation) {
         console.log(cv.getBuildInformation());
         onloadCallback();
-    }
-    else {
+    } else {
         cv['onRuntimeInitialized'] = () => {
             console.log(cv.getBuildInformation());
             onloadCallback();
@@ -49,6 +48,7 @@ function onVideoCanPlay() {
 };
 
 const FPS = 30;
+
 function processVideo() {
     try {
         if (!isCvLoaded) {
@@ -65,13 +65,14 @@ function processVideo() {
         img = src;
         cap.read(src);
         cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-        src.delete();
 
         hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
         frame_mask = cv.inRange(hsv, lower, upper)
-        dst = cv.bitwise_and(img, img, mask=frame_mask)
+        dst = cv.bitwise_and(img, img, mask = frame_mask)
 
         cv.imshow('canvas', dst);
+
+        src.delete();
         dst.delete();
 
         let delay = 1000 / FPS - (Date.now() - begin);
