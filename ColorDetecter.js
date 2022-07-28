@@ -5,6 +5,7 @@ let cap = null;
 let isCvLoaded = false
 
 let hsv = null;
+let img = null;
 let lower = [90,64,0];
 let upper = [150,255,255];
 let frame_mask = null;
@@ -60,6 +61,8 @@ function processVideo() {
 
         src = new cv.Mat(player.height, player.width, cv.CV_8UC4);
         dst = new cv.Mat();
+
+        img = src;
         cap.read(src);
         cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
         src.delete();
