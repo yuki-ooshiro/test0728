@@ -6,8 +6,8 @@ let isCvLoaded = false
 
 let hsv = null;
 let img = null;
-let lower = [90, 64, 0];
-let upper = [150, 255, 255];
+// let lower = null;
+// let upper = null;
 let frame_mask = null;
 
 export function ColorDetect() {
@@ -62,13 +62,17 @@ function processVideo() {
         src = new cv.Mat(player.height, player.width, cv.CV_8UC4);
         dst = new cv.Mat();
 
-        img = src;
         cap.read(src);
         cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
 
+        let lower = new cv.Mat(src.rows, src.cols, src.type(), [0, 0, 0, 0]);
+        let upper = new cv.Mat(src.rows, src.cols, src.type(), [150, 150, 150, 255]);
+
+        img = new cv.Mat(player.height, player.width, cv.CV_8UC4);
         hsv = cv.cvtColor(img, dst, cv.COLOR_BGR2HSV);
-        frame_mask = cv.inRange(hsv, lower, upper, dst);
-        dst = cv.bitwise_and(img, img, mask = frame_mask);
+        let frame_mask = new cv.Mat();
+        cv.inRange(hsv, lower, upper, frame_mask);
+        cv.bitwise_and(img, img, dst);
 
         cv.imshow('canvas', dst);
 
