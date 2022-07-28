@@ -66,7 +66,7 @@ function processVideo() {
         cap.read(src);
         cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
 
-        hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
+        hsv = cv.cvtColor(img, dst, cv.COLOR_BGR2HSV)
         frame_mask = cv.inRange(hsv, lower, upper)
         dst = cv.bitwise_and(img, img, mask = frame_mask)
 
