@@ -1,0 +1,53 @@
+* { 
+    margin: 0;
+    padding: 0; 
+}
+body {
+    background-color: whitesmoke;
+    overflow-x: hidden;
+    /* position: fixed; */
+}
+
+body::-webkit-scrollbar {
+    display:none;
+}
+
+ol, ul {
+    list-style-type: none;
+}
+
+.UIConteiner{
+    background-color:white;
+    position: absolute;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 450;
+    font-size: 10;
+    margin-top: 10px;
+    margin-left: 10px;
+    z-index: 10;
+    width: 45%;
+}
+.VConteiner{
+    position: absolute;
+    z-index: 1;
+    width: 100%; height: 100%;
+
+}
+.aframe{
+    position: absolute;
+    z-index: 11;
+}
+  
+#video {
+	/* background-color: black; */
+    display: block;
+    /* transform: rotateZ(180deg); */
+}
+
+#canvas {
+    display: block;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    
+}

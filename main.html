@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta http-equiv="X-UA-Compatible " content="ie=edge " />
+
+    <title>ColorDetecteAR</title>
+    <script src="./opencv.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div style="z-index: -10; position: absolute; width: 100%;bottom:0px; background-color: rgb(255, 255, 255);" id="sensorrequest">
+        <p style="color: rgb(108, 108, 108);">Actibe Sensor</p>
+    </div>
+
+    <div>
+        <input type="file" id="input-file" />
+    </div>
+
+    <div class="VConteiner">
+        <canvas id="canvas"></canvas>
+        <!-- <video playsinline autoplay="true" id="video"></video> -->
+        <video id="video" style="width: 100%; max-width: 1280px;" autoplay></video>
+    </div>
+
+    <script src="Main.js" type="module"></script>
+    <script src="ColorDetecter.js" type="module"></script>
+</body>
+
+</html>
