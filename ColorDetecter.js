@@ -6,8 +6,8 @@ let isCvLoaded = false
 
 let hsv = null;
 let img = null;
-// let lower = null;
-// let upper = null;
+let lower = null;
+let upper = null;
 let frame_mask = null;
 
 export function ColorDetect() {
@@ -59,16 +59,6 @@ function processVideo() {
         }
         let begin = Date.now();
 
-        // src = new cv.Mat(player.height, player.width, cv.CV_8UC4);
-        // dst = new cv.Mat();
-        // hsv = new cv.Mat();
-
-        // cap.read(src);
-        // cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-
-        // let lower = new cv.Mat(src.rows, src.cols, src.type(), [0, 0, 0, 0]);
-        // let upper = new cv.Mat(src.rows, src.cols, src.type(), [150, 150, 150, 255]);
-
         // img = new cv.Mat(player.height, player.width, cv.CV_8UC4);
         // cv.cvtColor(img, hsv, cv.COLOR_BGR2HSV);
         // let frame_mask = new cv.Mat();
@@ -80,16 +70,29 @@ function processVideo() {
         // src.delete();
         // dst.delete();
 
-        // let delay = 1000 / FPS - (Date.now() - begin);
-        // setTimeout(processVideo, delay);
-        // start processing.
         src = new cv.Mat(player.height, player.width, cv.CV_8UC4);
+        img = new cv.Mat(player.height, player.width, cv.CV_8UC4);
         dst = new cv.Mat();
+        hsv = new cv.Mat();
+        frame_mask = new cv.Mat();
+
         cap.read(src);
-        cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+        // cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+
+        lower = new cv.Mat(src.rows, src.cols, src.type(), [0, 0, 0, 0]);
+        upper = new cv.Mat(src.rows, src.cols, src.type(), [150, 150, 150, 255]);
+
+        cv.cvtColor(src, hsv, cv.COLOR_RGBA2GRAY);
+        cv.inRange(hsv, lower, upper, frame_mask);
+        cv.bitwise_and(img, img, dst);
+
+
+
         cv.imshow('canvas', dst);
         src.delete();
         dst.delete();
+        img.delete();
+        frame_mask.delete();
 
         // schedule the next one.
         let delay = 1000 / FPS - (Date.now() - begin);
