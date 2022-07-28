@@ -44,7 +44,7 @@ ol, ul {
     /* transform: rotateZ(180deg); */
 }
 
-#canvas {
+#canvas,#canvas2 {
     display: block;
     position: fixed;
     top: 0; left: 0;

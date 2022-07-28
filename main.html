@@ -13,19 +13,15 @@
 </head>
 
 <body>
-    <div style="z-index: -10; position: absolute; width: 100%;bottom:0px; background-color: rgb(255, 255, 255);" id="sensorrequest">
-        <p style="color: rgb(108, 108, 108);">Actibe Sensor</p>
-    </div>
-
-    <div>
-        <input type="file" id="input-file" />
-    </div>
-
-    <div class="VConteiner">
+    <!-- <div class="VConteiner">
         <canvas id="canvas"></canvas>
-        <!-- <video playsinline autoplay="true" id="video"></video> -->
+        <canvas id="canvas2"></canvas>
         <video id="video" style="width: 100%; max-width: 1280px;" autoplay></video>
-    </div>
+    </div> -->
+
+
+    <video id="video" controls playsinline muted autoplay></video>
+    <canvas id="canvas"></canvas>
 
     <script src="Main.js" type="module"></script>
     <script src="ColorDetecter.js" type="module"></script>

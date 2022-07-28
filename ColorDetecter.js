@@ -1,54 +1,80 @@
+const player = document.getElementById('video');
+let src = null;
+let dst = null;
+let cap = null;
+let isCvLoaded = false
 
+let hsv = null;
+let lower = [90,64,0];
+let upper = [150,255,255];
+let frame_mask = null;
 
-export function  ColorDetect(){
-
-    return true;
+export function ColorDetect(){
+    return null;
 }
 
-const cameraDeviceIds = [/* { deviceId, label } */];
-navigator.mediaDevices.enumerateDevices().then(function(mediaDevices) {
-  for (let len = mediaDevices.length, i = 0; i < len; i++) {
-    const item = mediaDevices[i];
-    // NOTE: カメラデバイスの場合、 kind プロパティには "videoinput" が入っている:
-    if (item.kind === "videoinput") {
-      const deviceId = item.deviceId;
-      const label = item.label;
-      // NOTE: ここでデバイスID（とラベル）を適当な変数に保存しておく
-      cameraDeviceIds.push({ deviceId, label });
+function onOpenCvReady() {
+    if (cv.getBuildInformation) {
+        console.log(cv.getBuildInformation());
+        onloadCallback();
     }
-  }
-});
-
-
-
-function draw() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    // ctx.drawImage(video, 0, 0);
-    requestAnimationFrame(draw);
-}
-
-
-window.addEventListener('load', function() {
-    startup();
-});
-
-function startup() {
-    const medias = {
-        audio: false,
-        video: {
-            deviceId: cameraDeviceIds[0],
-            // facingMode: "user"   // フロントカメラを利用する
-            // facingMode: { exact: "environment" } // リアカメラを利用する場合
+    else {
+        cv['onRuntimeInitialized'] = () => {
+            console.log(cv.getBuildInformation());
+            onloadCallback();
         }
-    };
-    navigator.mediaDevices.getUserMedia(medias).then(function(stream) {
-        video.srcObject = stream;
-        medias.play();
-        console.log("awakeeeeee");
-        requestAnimationFrame(draw);
-        
-    }).catch(function(err) {
-        window.alert("カメラの使用が許可されませんでした");
+    }
+};
+
+function onloadCallback() {
+    isCvLoaded = true;
+};
+
+const constraints = {
+    video: true,
+};
+
+// Attach the video stream to the video element and autoplay.
+navigator.mediaDevices.getUserMedia(constraints)
+    .then((stream) => {
+        player.srcObject = stream;
+        player.addEventListener('canplay', onVideoCanPlay, false);
     });
-}
+
+function onVideoCanPlay() {
+    player.width = player.videoWidth // width, heightを設定しないとcap.read(src)で失敗する。
+    player.height = player.videoHeight
+    setTimeout(processVideo, 100);
+};
+
+const FPS = 30;
+function processVideo() {
+    try {
+        if (!isCvLoaded) {
+            setTimeout(processVideo, 100);
+            return;
+        } else if (cap == null) {
+            cap = new cv.VideoCapture(player);
+        }
+        let begin = Date.now();
+
+        src = new cv.Mat(player.height, player.width, cv.CV_8UC4);
+        dst = new cv.Mat();
+        cap.read(src);
+        cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+        src.delete();
+
+        hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
+        frame_mask = cv.inRange(hsv, lower, upper)
+        dst = cv.bitwise_and(img, img, mask=frame_mask)
+
+        cv.imshow('canvas', dst);
+        dst.delete();
+
+        let delay = 1000 / FPS - (Date.now() - begin);
+        setTimeout(processVideo, delay);
+    } catch (err) {
+        console.error(err.message);
+    }
+    return;
+};

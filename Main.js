@@ -1,9 +1,9 @@
 import { ColorDetect } from './ColorDetecter.js'
 
 function main() {
-    if (ColorDetect()) {
+    // if (ColorDetect()) {
         // $('body').prepend(box);
-    }
+    // }
     requestAnimationFrame(main);
 }
 
